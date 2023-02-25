@@ -112,6 +112,9 @@ RUN <<EOF
 
     mkdir /data
     chown -R user:user /data
+
+    rm -rf extensions
+    ln -s /data/extensions extensions
 EOF
 
 ENTRYPOINT [ "gosu", "user", "./webui.sh", "--listen", "--data-dir", "/data" ]

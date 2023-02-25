@@ -15,7 +15,7 @@
 docker build . -t aoirint/sd_webui
 ```
 
-### 5. Run Web UI
+### 2. Run Web UI
 
 ```shell
 # Create a data directory (UID:GID = 1000:1000)

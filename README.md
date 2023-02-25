@@ -21,8 +21,8 @@ docker build . -t aoirint/sd_webui
 # Create a data directory (UID:GID = 1000:1000)
 mkdir -p ./data
 
-docker run --rm --gpus all -v "./data:/data" -p "127.0.0.1:7860:7860/tcp" aoirint/sd_webui
+docker run --rm --gpus all -v "./data:/data" -v "./log:/code/stable-diffusion-webui/log" -p "127.0.0.1:7860:7860/tcp" aoirint/sd_webui
 
 # To install extensions via Web UI (DO NOT ALLOW PUBLIC ACCESS),
-docker run --rm --gpus all -v "./data:/data" -p "127.0.0.1:7860:7860/tcp" aoirint/sd_webui --enable-insecure-extension-access
+docker run --rm --gpus all -v "./data:/data" -v "./log:/code/stable-diffusion-webui/log" -p "127.0.0.1:7860:7860/tcp" aoirint/sd_webui --enable-insecure-extension-access
 ```

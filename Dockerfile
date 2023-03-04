@@ -110,7 +110,9 @@ EOF
 RUN <<EOF
     set -eu
 
-    gosu user venv/bin/pip3 install --no-cache-dir onnxruntime-gpu==1.14.1
+    gosu user venv/bin/pip3 install --no-cache-dir \
+        onnxruntime-gpu==1.14.1 \
+        xformers==0.0.16
 EOF
 
 RUN <<EOF

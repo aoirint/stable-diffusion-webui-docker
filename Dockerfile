@@ -110,6 +110,12 @@ EOF
 RUN <<EOF
     set -eu
 
+    gosu user pip3 install onnxruntime-gpu==1.14.1
+EOF
+
+RUN <<EOF
+    set -eu
+
     mkdir /data
     chown -R user:user /data
 

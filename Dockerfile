@@ -125,4 +125,4 @@ RUN <<EOF
     ln -s /data/extensions extensions
 EOF
 
-ENTRYPOINT [ "gosu", "user", "./webui.sh", "--listen", "--data-dir", "/data" ]
+ENTRYPOINT [ "gosu", "user", "./webui.sh", "--listen", "--data-dir", "/data", "--xformers" ]

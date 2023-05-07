@@ -18,8 +18,8 @@ docker build . -t aoirint/sd_webui
 ### 2. Run Web UI
 
 ```shell
-# Create a data directory (UID:GID = 1000:1000)
-mkdir -p ./data
+# Create permanent directories (UID:GID = 1000:1000)
+mkdir -p ./data ./log ./cache/huggingface
 
 docker run --rm --gpus all -v "./data:/data" -v "./log:/code/stable-diffusion-webui/log" -v "./cache/huggingface:/home/user/.cache/huggingface" -p "127.0.0.1:7860:7860/tcp" aoirint/sd_webui
 

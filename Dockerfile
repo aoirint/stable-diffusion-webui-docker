@@ -52,6 +52,7 @@ FROM ${BASE_RUNTIME_IMAGE} AS runtime-env
 
 ARG DEBIAN_FRONTEND=noninteractive
 ENV PYTHONUNBUFFERED=1
+ENV PIP_NO_CACHE_DIR=1
 ENV PATH=/home/user/.local/bin:/opt/python/bin:${PATH}
 
 COPY --from=python-env /opt/python /opt/python

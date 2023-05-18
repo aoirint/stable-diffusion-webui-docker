@@ -33,11 +33,13 @@ jobs:
         uses: docker/build-push-action@v3
         env:
           IMAGE_NAME_AND_TAG: ${{ format('{0}:{1}', env.IMAGE_NAME, env.IMAGE_TAG) }}
+          IMAGE_CACHE_FROM: ${{ format('type=registry,ref={0}:latest-buildcache,mode=max', env.IMAGE_NAME) }}
+          IMAGE_CACHE_TO: ${{ env.IMAGE_TAG == 'latest' && format('type=registry,ref={0}:latest-buildcache,mode=max', env.IMAGE_NAME) || '' }}
         with:
           context: .
           builder: ${{ steps.buildx.outputs.name }}
           file: ./Dockerfile
           push: true
           tags: ${{ env.IMAGE_NAME_AND_TAG }}
-          cache-from: type=registry,ref=${{ env.IMAGE_NAME_AND_TAG }}-buildcache
-          cache-to: type=registry,ref=${{ env.IMAGE_NAME_AND_TAG }}-buildcache,mode=max
+          cache-from: ${{ env.IMAGE_CACHE_FROM }}
+          cache-to: ${{ env.IMAGE_CACHE_TO }} 

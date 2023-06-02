@@ -65,7 +65,10 @@ RUN <<EOF
     apt-get update
     apt-get install -y \
         git \
-        gosu
+        gosu \
+        libgl1 \
+        libglib2.0-0 \
+        google-perftools
     apt-get clean
     rm -rf /var/lib/apt/lists/*
 EOF
@@ -97,17 +100,6 @@ RUN <<EOF
     set -eu
 
     gosu user ./webui.sh --exit --skip-torch-cuda-test
-EOF
-
-RUN <<EOF
-    set -eu
-
-    apt-get update
-    apt-get install -y \
-        libgl1 \
-        libglib2.0-0
-    apt-get clean
-    rm -rf /var/lib/apt/lists/*
 EOF
 
 RUN <<EOF

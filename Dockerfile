@@ -81,7 +81,7 @@ RUN <<EOF
 EOF
 
 ARG SD_WEBUI_URL=https://github.com/AUTOMATIC1111/stable-diffusion-webui
-ARG SD_WEBUI_VERSION=20ae71faa8ef035c31aa3a410b707d792c8203a3
+ARG SD_WEBUI_VERSION=394ffa7b0a7fff3ec484bcd084e673a8b301ccc8
 
 RUN <<EOF
     set -eu

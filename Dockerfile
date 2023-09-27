@@ -108,6 +108,12 @@ RUN <<EOF
     gosu user venv/bin/pip3 install --no-cache-dir \
         onnxruntime-gpu==1.16.0 \
         xformers==0.0.21
+
+    # Mikubill/sd-webui-controlnet requirements
+    gosu user venv/bin/pip3 install --no-cache-dir \
+        mediapipe==0.10.5 \
+        svglib==1.5.1 \
+        fvcore==0.1.5.post20221221
 EOF
 
 RUN <<EOF

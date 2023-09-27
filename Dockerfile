@@ -107,7 +107,7 @@ RUN <<EOF
 
     gosu user venv/bin/pip3 install --no-cache-dir \
         onnxruntime-gpu==1.16.0 \
-        xformers==0.0.20
+        xformers==0.0.21
 EOF
 
 RUN <<EOF

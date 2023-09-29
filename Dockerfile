@@ -121,6 +121,9 @@ RUN <<EOF
     mkdir -p /home/user/.cache/huggingface
     chown -R user:user /home/user/.cache
 
+    mkdir /code/stable-diffusion-webui/log
+    chown -R user:user /code/stable-diffusion-webui/log
+
     rm -rf /code/stable-diffusion-webui/extensions
     ln -s /data/extensions /code/stable-diffusion-webui/extensions
 EOF

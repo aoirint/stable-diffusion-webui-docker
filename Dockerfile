@@ -118,6 +118,9 @@ RUN <<EOF
     mkdir /data
     chown -R user:user /data
 
+    mkdir -p /home/user/.cache/huggingface
+    chown -R user:user /home/user/.cache
+
     rm -rf /code/stable-diffusion-webui/extensions
     ln -s /data/extensions /code/stable-diffusion-webui/extensions
 EOF

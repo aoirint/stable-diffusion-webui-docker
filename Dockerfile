@@ -118,8 +118,8 @@ RUN <<EOF
     mkdir /data
     chown -R user:user /data
 
-    rm -rf extensions
-    ln -s /data/extensions extensions
+    rm -rf /code/stable-diffusion-webui/extensions
+    ln -s /data/extensions /code/stable-diffusion-webui/extensions
 EOF
 
 ENTRYPOINT [ "gosu", "user", "./webui.sh", "--listen", "--data-dir", "/data", "--xformers" ]

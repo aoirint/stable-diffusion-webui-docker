@@ -22,8 +22,8 @@ sudo docker build -t aoirint/sd_webui .
 mkdir -p ./data ./log ./cache/huggingface
 sudo chown -R 1000:1000 ./data ./log ./cache
 
-sudo docker run --gpus all --rm -v "./data:/data" -v "./log:/code/stable-diffusion-webui/log" -v "./cache/huggingface:/home/user/.cache/huggingface" -p "127.0.0.1:7860:7860/tcp" aoirint/sd_webui
+sudo docker run --gpus all --rm -it -v "./data:/data" -v "./log:/code/stable-diffusion-webui/log" -v "./cache/huggingface:/home/user/.cache/huggingface" -p "127.0.0.1:7860:7860/tcp" aoirint/sd_webui
 
 # To install extensions via Web UI (DO NOT ALLOW PUBLIC ACCESS),
-sudo docker run --gpus all --rm -v "./data:/data" -v "./log:/code/stable-diffusion-webui/log" -v "./cache/huggingface:/home/user/.cache/huggingface" -p "127.0.0.1:7860:7860/tcp" aoirint/sd_webui --enable-insecure-extension-access
+sudo docker run --gpus all --rm -it -v "./data:/data" -v "./log:/code/stable-diffusion-webui/log" -v "./cache/huggingface:/home/user/.cache/huggingface" -p "127.0.0.1:7860:7860/tcp" aoirint/sd_webui --enable-insecure-extension-access
 ```

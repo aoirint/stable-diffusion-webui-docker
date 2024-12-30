@@ -17,6 +17,26 @@ jobs:
   docker-build-and-push:
     runs-on: ubuntu-latest
     steps:
+      - name: Free disk space
+        run: |-
+          # https://github.com/actions/runner-images/issues/2840#issuecomment-2272410832
+          # Remove software and language runtimes we're not using
+          sudo rm -rf \
+            "$AGENT_TOOLSDIRECTORY" \
+            /opt/google/chrome \
+            /opt/microsoft/msedge \
+            /opt/microsoft/powershell \
+            /opt/pipx \
+            /usr/lib/mono \
+            /usr/local/julia* \
+            /usr/local/lib/android \
+            /usr/local/lib/node_modules \
+            /usr/local/share/chromium \
+            /usr/local/share/powershell \
+            /usr/share/dotnet \
+            /usr/share/swift
+          df -h /
+
       - uses: actions/checkout@v4
 
       - name: Setup Docker Buildx

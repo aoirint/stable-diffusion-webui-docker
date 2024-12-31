@@ -1,4 +1,4 @@
-# syntax=docker/dockerfile:1.4
+# syntax=docker/dockerfile:1.12
 ARG BASE_IMAGE=ubuntu:22.04
 ARG BASE_RUNTIME_IMAGE=nvidia/cuda:11.8.0-cudnn8-runtime-ubuntu22.04
 
@@ -6,9 +6,9 @@ FROM ${BASE_IMAGE} AS python-env
 
 ARG DEBIAN_FRONTEND=noninteractive
 ENV PYTHONUNBUFFERED=1
-ENV PIP_NO_CACHE_DIR=1
-ARG PYENV_VERSION=v2.3.27
-ARG PYTHON_VERSION=3.10.13
+ARG PIP_NO_CACHE_DIR=1
+ARG PYENV_VERSION=v2.5.0
+ARG PYTHON_VERSION=3.10.16
 
 RUN <<EOF
     set -eu
@@ -54,7 +54,7 @@ FROM ${BASE_RUNTIME_IMAGE} AS runtime-env
 
 ARG DEBIAN_FRONTEND=noninteractive
 ENV PYTHONUNBUFFERED=1
-ENV PIP_NO_CACHE_DIR=1
+ARG PIP_NO_CACHE_DIR=1
 ENV PATH=/home/user/.local/bin:/opt/python/bin:${PATH}
 
 COPY --from=python-env /opt/python /opt/python
@@ -63,12 +63,14 @@ RUN <<EOF
     set -eu
 
     apt-get update
+
     apt-get install -y \
         git \
         gosu \
         libgl1 \
         libglib2.0-0 \
         google-perftools
+
     apt-get clean
     rm -rf /var/lib/apt/lists/*
 EOF
@@ -81,7 +83,8 @@ RUN <<EOF
 EOF
 
 ARG SD_WEBUI_URL=https://github.com/AUTOMATIC1111/stable-diffusion-webui
-ARG SD_WEBUI_VERSION=5ef669de080814067961f28357256e8fe27544f4
+# v1.10.0
+ARG SD_WEBUI_VERSION=c19d04436496ab29ddca4758a792831ae41b31de
 
 RUN <<EOF
     set -eu
@@ -107,7 +110,7 @@ RUN <<EOF
 
     gosu user venv/bin/pip3 install --no-cache-dir \
         onnxruntime-gpu==1.16.0 \
-        xformers==0.0.21
+        xformers==0.0.22
 
     # Mikubill/sd-webui-controlnet requirements
     gosu user venv/bin/pip3 install --no-cache-dir \
@@ -122,8 +125,14 @@ RUN <<EOF
     mkdir /data
     chown -R user:user /data
 
-    rm -rf extensions
-    ln -s /data/extensions extensions
+    mkdir -p /home/user/.cache/huggingface
+    chown -R user:user /home/user/.cache
+
+    mkdir /code/stable-diffusion-webui/log
+    chown -R user:user /code/stable-diffusion-webui/log
+
+    rm -rf /code/stable-diffusion-webui/extensions
+    ln -s /data/extensions /code/stable-diffusion-webui/extensions
 EOF
 
 ENTRYPOINT [ "gosu", "user", "./webui.sh", "--listen", "--data-dir", "/data", "--xformers" ]

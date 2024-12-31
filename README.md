@@ -12,7 +12,7 @@
 ### 1. Build Docker image
 
 ```shell
-docker build . -t aoirint/sd_webui
+sudo docker build -t aoirint/sd_webui .
 ```
 
 ### 2. Run Web UI
@@ -20,9 +20,10 @@ docker build . -t aoirint/sd_webui
 ```shell
 # Create permanent directories (UID:GID = 1000:1000)
 mkdir -p ./data ./log ./cache/huggingface
+sudo chown -R 1000:1000 ./data ./log ./cache
 
-docker run --rm --gpus all -v "./data:/data" -v "./log:/code/stable-diffusion-webui/log" -v "./cache/huggingface:/home/user/.cache/huggingface" -p "127.0.0.1:7860:7860/tcp" aoirint/sd_webui
+sudo docker run --gpus all --rm -it -v "./data:/data" -v "./log:/code/stable-diffusion-webui/log" -v "./cache/huggingface:/home/user/.cache/huggingface" -p "127.0.0.1:7860:7860/tcp" aoirint/sd_webui
 
 # To install extensions via Web UI (DO NOT ALLOW PUBLIC ACCESS),
-docker run --rm --gpus all -v "./data:/data" -v "./log:/code/stable-diffusion-webui/log" -v "./cache/huggingface:/home/user/.cache/huggingface" -p "127.0.0.1:7860:7860/tcp" aoirint/sd_webui --enable-insecure-extension-access
+sudo docker run --gpus all --rm -it -v "./data:/data" -v "./log:/code/stable-diffusion-webui/log" -v "./cache/huggingface:/home/user/.cache/huggingface" -p "127.0.0.1:7860:7860/tcp" aoirint/sd_webui --enable-insecure-extension-access
 ```

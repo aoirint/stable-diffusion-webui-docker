@@ -4,8 +4,8 @@
 
 ## Environments
 
-- Ubuntu 20.04 or later
-- [Docker Engine](https://docs.docker.com/engine/install/ubuntu/) 23.0 or later
+- Ubuntu 22.04 or later
+- [Docker Engine](https://docs.docker.com/engine/install/ubuntu/) 27.0 or later
 - [NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html)
 
 ## Usage

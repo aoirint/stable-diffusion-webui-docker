@@ -114,7 +114,7 @@ RUN <<EOF
 
     # Mikubill/sd-webui-controlnet requirements
     gosu user venv/bin/pip3 install --no-cache-dir \
-        mediapipe==0.10.5 \
+        mediapipe==0.10.20 \
         svglib==1.5.1 \
         fvcore==0.1.5.post20221221
 EOF

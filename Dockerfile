@@ -111,6 +111,22 @@ RUN <<EOF
     gosu user venv/bin/pip3 install --no-cache-dir \
         onnxruntime-gpu==1.16.0 \
         xformers==0.0.22
+
+    # Mikubill/sd-webui-controlnet requirements
+    # https://github.com/Mikubill/sd-webui-controlnet/blob/56cec5b2958edf3b1807b7e7b2b1b5186dbd2f81/requirements.txt
+    gosu user venv/bin/pip3 install --no-cache-dir \
+        fvcore==0.1.5.post20221221 \
+        mediapipe==0.10.20 \
+        opencv-python==4.8.1.78 \
+        svglib==1.5.1 \
+        addict==2.4.0 \
+        yapf==0.43.0 \
+        albumentations==1.4.24 \
+        matplotlib==3.10.0 \
+        facexlib==0.3.0 \
+        timm==0.9.5 \
+        pydantic==1.10.19 \
+        controlnet-aux==0.0.9
 EOF
 
 RUN <<EOF

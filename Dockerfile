@@ -171,4 +171,7 @@ ENV PYTHONUNBUFFERED="1"
 # webui.sh: Disable venv support
 ENV venv_dir="-"
 
+# webui.sh: Enable accelerate
+ENV ACCELERATE="True"
+
 ENTRYPOINT [ "./webui.sh", "--listen", "--data-dir", "${DATA_DIR}", "--xformers" ]

@@ -104,7 +104,8 @@ RUN <<EOF
         git \
         libgl1 \
         libglib2.0-0 \
-        google-perftools
+        google-perftools \
+        bc
 
     apt-get clean
     rm -rf /var/lib/apt/lists/*

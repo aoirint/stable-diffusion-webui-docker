@@ -41,6 +41,19 @@ EOF
 # Build the Python virtual environment
 FROM ${BASE_IMAGE} AS build-python-venv-stage
 
+ARG DEBIAN_FRONTEND="noninteractive"
+RUN <<EOF
+    set -eu
+
+    apt-get update
+
+    apt-get install -y \
+        git
+
+    apt-get clean
+    rm -rf /var/lib/apt/lists/*
+EOF
+
 ENV PYTHON_DIR="/opt/python"
 COPY --chown=root:root --from=download-python-stage "${PYTHON_DIR}" "${PYTHON_DIR}"
 

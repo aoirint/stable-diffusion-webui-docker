@@ -41,6 +41,7 @@ dependencies = [
   "onnxruntime-gpu",
   "xformers",
   "clip",
+  "pydantic<2",
 ]
 
 [tool.uv.sources]

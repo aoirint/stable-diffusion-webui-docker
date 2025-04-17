@@ -174,4 +174,11 @@ ENV venv_dir="-"
 # webui.sh: Enable accelerate
 ENV ACCELERATE="True"
 
+# Initialize WebUI and exit
+RUN <<EOF
+    set -eu
+
+    ./webui.sh --skip-torch-cuda-test --exit
+EOF
+
 ENTRYPOINT [ "./webui.sh", "--skip-torch-cuda-test", "--listen", "--data-dir", "${DATA_DIR}", "--xformers" ]

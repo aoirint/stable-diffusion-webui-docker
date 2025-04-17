@@ -237,6 +237,12 @@ wheels = [
 ]
 
 [[package]]
+name = "clip"
+version = "0.2.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/58/dc/12bf8888635ade4de57565dca75909a809d1da6ec341eacd546028a73ab9/clip-0.2.0.tar.gz", hash = "sha256:c0913fbb1a0eac8a20da4a5c890d454b081305f64429c0aa5b652164450253b8", size = 5453 }
+
+[[package]]
 name = "colorama"
 version = "0.4.6"
 source = { registry = "https://pypi.org/simple" }
@@ -1615,6 +1621,7 @@ dependencies = [
     { name = "accelerate" },
     { name = "blendmodes" },
     { name = "clean-fid" },
+    { name = "clip" },
     { name = "diskcache" },
     { name = "einops" },
     { name = "facexlib" },
@@ -1652,6 +1659,7 @@ requires-dist = [
     { name = "accelerate" },
     { name = "blendmodes" },
     { name = "clean-fid" },
+    { name = "clip" },
     { name = "diskcache" },
     { name = "einops" },
     { name = "facexlib" },

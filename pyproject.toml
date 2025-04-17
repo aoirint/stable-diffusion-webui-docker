@@ -44,6 +44,18 @@ dependencies = [
   "onnxruntime-gpu==1.16.0",
   "xformers==0.0.23.post1",
   "clip",
+  # https://github.com/Mikubill/sd-webui-controlnet/blob/56cec5b2958edf3b1807b7e7b2b1b5186dbd2f81/requirements.txt
+  "fvcore",
+  "mediapipe",
+  "opencv-python>=4.8.0",
+  "svglib",
+  "addict",
+  "yapf",
+  "albumentations==1.4.3",
+  "matplotlib",
+  "timm<=0.9.5",
+  "pydantic<=1.10.17",
+  "controlnet_aux>=0.0.9",
 ]
 
 [tool.uv.sources]

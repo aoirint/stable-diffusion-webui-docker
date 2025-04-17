@@ -15,7 +15,7 @@ dependencies = [
   "einops==0.4.1",
   "facexlib==0.3.0",
   "fastapi==0.94.0",
-  "gradio==3.41.2",
+  "gradio==5.23.0",
   "httpcore==0.15",
   "inflection==0.5.1",
   "jsonmerge==1.8.0",

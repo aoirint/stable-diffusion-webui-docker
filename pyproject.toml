@@ -4,3 +4,8 @@ version = "0.0.0"
 readme = "README.md"
 requires-python = ">=3.10,<3.11"
 dependencies = []
+
+[[tool.uv.index]]
+name = "pytorch-cu118"
+url = "https://download.pytorch.org/whl/cu118"
+explicit = true

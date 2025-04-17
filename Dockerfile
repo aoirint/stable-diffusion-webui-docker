@@ -191,7 +191,7 @@ ENV ACCELERATE="True"
 RUN <<EOF
     set -eu
 
-    ./webui.sh --skip-torch-cuda-test --exit
+    ./webui.sh --skip-torch-cuda-test --skip-install --exit
 EOF
 
 ENTRYPOINT [ "./webui.sh", "--skip-torch-cuda-test", "--skip-install", "--listen", "--data-dir", "/data", "--xformers" ]

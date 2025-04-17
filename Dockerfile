@@ -174,4 +174,4 @@ ENV venv_dir="-"
 # webui.sh: Enable accelerate
 ENV ACCELERATE="True"
 
-ENTRYPOINT [ "./webui.sh", "--listen", "--data-dir", "${DATA_DIR}", "--xformers" ]
+ENTRYPOINT [ "./webui.sh", "--skip-torch-cuda-test", "--listen", "--data-dir", "${DATA_DIR}", "--xformers" ]

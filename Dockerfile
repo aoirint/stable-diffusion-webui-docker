@@ -181,4 +181,4 @@ RUN <<EOF
     ./webui.sh --skip-torch-cuda-test --exit
 EOF
 
-ENTRYPOINT [ "./webui.sh", "--skip-torch-cuda-test", "--listen", "--data-dir", "${DATA_DIR}", "--xformers" ]
+ENTRYPOINT [ "./webui.sh", "--skip-torch-cuda-test", "--skip-install", "--listen", "--data-dir", "${DATA_DIR}", "--xformers" ]

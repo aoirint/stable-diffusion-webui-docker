@@ -37,6 +37,8 @@ dependencies = [
   "torchsde",
   "transformers>=4.30,<4.31",
   "pillow-avif-plugin>=1.4,<1.5",
+  "onnxruntime-gpu",
+  "xformers",
 ]
 
 [tool.uv.sources]

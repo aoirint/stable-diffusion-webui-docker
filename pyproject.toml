@@ -26,7 +26,7 @@ dependencies = [
   "piexif",
   "protobuf==3.20.0",
   "psutil",
-  "pytorch_lightning",
+  "pytorch_lightning<2",
   "requests",
   "resize-right",
   "safetensors",

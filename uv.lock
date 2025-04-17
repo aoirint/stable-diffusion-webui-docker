@@ -1691,7 +1691,7 @@ requires-dist = [
     { name = "torchsde" },
     { name = "torchvision", specifier = "==0.21.0+cu118", index = "https://download.pytorch.org/whl/cu118" },
     { name = "transformers", specifier = ">=4.30,<4.31" },
-    { name = "xformers" },
+    { name = "xformers", index = "https://download.pytorch.org/whl/cu118" },
 ]
 
 [[package]]
@@ -1994,15 +1994,13 @@ wheels = [
 [[package]]
 name = "xformers"
 version = "0.0.29.post3"
-source = { registry = "https://pypi.org/simple" }
+source = { registry = "https://download.pytorch.org/whl/cu118" }
 dependencies = [
     { name = "numpy" },
     { name = "torch" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/c1/fd/e9201fbee6a1a6d7a9c67c24a256ad4c2377bc67a634f7dbeaea23bd668a/xformers-0.0.29.post3.tar.gz", hash = "sha256:0b77c67ecc3c9fdd8a0e4399e675adf12e2ff40285e00974cca2d09108157f60", size = 8461348 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/55/4f/ef63f866ec7d3a23f78629604deaf379cd833fa4fd0cf7e6f8a77906f125/xformers-0.0.29.post3-cp310-cp310-manylinux_2_28_x86_64.whl", hash = "sha256:59c64379c015f36eb69947f1ee559a0ac8742159ef3d9b8e5a6d1519806d2101", size = 43339848 },
-    { url = "https://files.pythonhosted.org/packages/a5/6f/036bfe1fa98f0c48cc38b389dd808f01b34a017f62afcb6cf4bb5177cd5d/xformers-0.0.29.post3-cp310-cp310-win_amd64.whl", hash = "sha256:34f13d69ad9404e44ae11169e99842c3fccdc2c75b1fc4831a70c78392d990db", size = 167739592 },
+    { url = "https://download.pytorch.org/whl/cu118/xformers-0.0.29.post3-cp310-cp310-manylinux_2_28_x86_64.whl" },
 ]
 
 [[package]]

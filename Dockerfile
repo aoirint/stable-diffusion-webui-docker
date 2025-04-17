@@ -1,5 +1,6 @@
 # syntax=docker/dockerfile:1.14
 ARG BASE_IMAGE="ubuntu:22.04"
+ARG BASE_RUNTIME_IMAGE=nvidia/cuda:11.8.0-cudnn8-runtime-ubuntu22.04
 
 # Download the Python standalone build
 FROM ${BASE_IMAGE} AS download-python-stage
@@ -105,7 +106,7 @@ EOF
 
 
 # Build the runtime image
-FROM ${BASE_IMAGE} AS runtime-stage
+FROM ${BASE_RUNTIME_IMAGE} AS runtime-stage
 
 ARG DEBIAN_FRONTEND="noninteractive"
 RUN <<EOF

@@ -178,7 +178,7 @@ ARG SD_WEBUI_VERSION="82a973c04367123ae98bd9abdf80d9eda9b910e2"
 RUN <<EOF
     set -eu
 
-    git clone "${SD_WEBUI_URL}" "/code/stable-diffusion-webui" .
+    git clone "${SD_WEBUI_URL}" .
     git checkout "${SD_WEBUI_VERSION}"
 EOF
 

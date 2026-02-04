@@ -120,14 +120,6 @@ RUN <<EOF
     rm -rf /var/lib/apt/lists/*
 EOF
 
-# libnvrtc.so workaround
-# https://github.com/aoirint/sd-scripts-docker/issues/19
-RUN <<EOF
-    ln -s \
-        /usr/local/cuda-11.8/targets/x86_64-linux/lib/libnvrtc.so.11.2 \
-        /usr/local/cuda-11.8/targets/x86_64-linux/lib/libnvrtc.so
-EOF
-
 # ホームディレクトリを持つ実行用ユーザーを作成
 ARG USER_UID="1000"
 ARG USER_GID="1000"

@@ -1,6 +1,5 @@
-# syntax=docker/dockerfile:1.14
-ARG BASE_IMAGE="ubuntu:22.04"
-ARG BASE_RUNTIME_IMAGE=nvidia/cuda:11.8.0-cudnn8-runtime-ubuntu22.04
+# syntax=docker/dockerfile:1
+ARG BASE_IMAGE="ubuntu:24.04"
 
 # Pythonバイナリをダウンロードするステージ
 FROM "${BASE_IMAGE}" AS download-python-stage
@@ -108,7 +107,7 @@ EOF
 
 
 # 実行用ステージ
-FROM "${BASE_RUNTIME_IMAGE}" AS runtime-stage
+FROM "${BASE_IMAGE}" AS runtime-stage
 
 ARG DEBIAN_FRONTEND="noninteractive"
 RUN <<EOF

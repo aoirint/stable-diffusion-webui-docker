@@ -8,15 +8,14 @@ SHELL ["/bin/bash", "-euo", "pipefail", "-c"]
 
 ARG DEBIAN_FRONTEND="noninteractive"
 
-RUN <<EOF
+RUN --mount=type=cache,id=apt-cache-download,target=/var/cache/apt \
+    --mount=type=cache,id=apt-lists-download,target=/var/lib/apt/lists \
+<<EOF
     apt-get update
 
     apt-get install -y \
         wget \
         ca-certificates
-
-    apt-get clean
-    rm -rf /var/lib/apt/lists/*
 EOF
 
 ARG PYTHON_DATE="20260203"
@@ -45,14 +44,13 @@ SHELL ["/bin/bash", "-euo", "pipefail", "-c"]
 
 ARG DEBIAN_FRONTEND="noninteractive"
 
-RUN <<EOF
+RUN --mount=type=cache,id=apt-cache-build,target=/var/cache/apt \
+    --mount=type=cache,id=apt-lists-build,target=/var/lib/apt/lists \
+<<EOF
     apt-get update
 
     apt-get install -y \
         git
-
-    apt-get clean
-    rm -rf /var/lib/apt/lists/*
 EOF
 
 
@@ -106,7 +104,9 @@ SHELL ["/bin/bash", "-euo", "pipefail", "-c"]
 
 ARG DEBIAN_FRONTEND="noninteractive"
 
-RUN <<EOF
+RUN --mount=type=cache,id=apt-cache-runtime,target=/var/cache/apt \
+    --mount=type=cache,id=apt-lists-runtime,target=/var/lib/apt/lists \
+<<EOF
     apt-get update
 
     apt-get install -y \
@@ -115,9 +115,6 @@ RUN <<EOF
         libglib2.0-0 \
         google-perftools \
         bc
-
-    apt-get clean
-    rm -rf /var/lib/apt/lists/*
 EOF
 
 # ホームディレクトリを持つ実行用ユーザーを作成

@@ -7,16 +7,22 @@ on:
   release:
     types:
       - created
-  workflow_dispatch:
+
+# Minimal permissions for pushing images to GHCR
+permissions:
+  contents: read
+  packages: write
 
 env:
   IMAGE_NAME: aoirint/sd_webui
-  IMAGE_TAG: ${{ github.event.release.tag_name != '' && github.event.release.tag_name || 'latest' }}
+  GHCR_IMAGE_NAME: ghcr.io/aoirint/sd_webui
 
 jobs:
-  docker-build-and-push:
+  build-docker:
     runs-on: ubuntu-latest
+
     steps:
+      # Free space on the GitHub-hosted runner
       - name: Free disk space
         run: |-
           # https://github.com/actions/runner-images/issues/2840#issuecomment-2272410832
@@ -37,30 +43,69 @@ jobs:
             /usr/share/swift
           df -h /
 
+      # Checkout repository
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
+      # Enable Buildx for cache and multi-platform builds
       - name: Setup Docker Buildx
         id: buildx
         uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f # v3.12.0
 
-      - name: Login to Docker Registry
+      # Authenticate to Docker Hub
+      - name: Login to Docker Hub
         uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9 # v3.7.0
         with:
           username: ${{ vars.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      # Authenticate to GHCR
+      - name: Login to GHCR
+        uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9 # v3.7.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # Generate tags, labels, and annotations
+      - name: Docker metadata
+        id: meta
+        uses: docker/metadata-action@c299e40c65443455700f0fdfc63efafe5b349051 # v5.10.0
+        with:
+          images: |
+            ${{ env.IMAGE_NAME }}
+            ${{ env.GHCR_IMAGE_NAME }}
+          # Disable auto-latest to control it explicitly
+          flavor: |
+            latest=false
+          tags: |
+            type=raw,value=edge,enable=${{ github.event_name == 'push' }}
+            type=raw,value=${{ github.event.release.tag_name }},enable=${{ github.event_name == 'release' }}
+            type=raw,value=latest,enable=${{ github.event_name == 'release' && !github.event.release.prerelease }}
+
+      # Choose cache tags for edge vs latest releases
+      - name: Derive build cache refs
+        id: cache
+        run: |-
+          if [[ "${{ github.event_name }}" == "release" && "${{ github.event.release.prerelease }}" == "false" ]]; then
+            echo "cache_from=type=registry,ref=${{ env.GHCR_IMAGE_NAME }}:buildcache-edge" >> "$GITHUB_OUTPUT"
+            echo "cache_from=type=registry,ref=${{ env.GHCR_IMAGE_NAME }}:buildcache-latest" >> "$GITHUB_OUTPUT"
+            echo "cache_to=type=registry,ref=${{ env.GHCR_IMAGE_NAME }}:buildcache-latest,mode=max" >> "$GITHUB_OUTPUT"
+          else
+            echo "cache_from=type=registry,ref=${{ env.GHCR_IMAGE_NAME }}:buildcache-edge" >> "$GITHUB_OUTPUT"
+            echo "cache_to=type=registry,ref=${{ env.GHCR_IMAGE_NAME }}:buildcache-edge,mode=max" >> "$GITHUB_OUTPUT"
+          fi
+
+      # Build and push images
       - name: Build and Deploy Docker image
         uses: docker/build-push-action@263435318d21b8e681c14492fe198d362a7d2c83 # v6.18.0
-        env:
-          IMAGE_NAME_AND_TAG: ${{ format('{0}:{1}', env.IMAGE_NAME, env.IMAGE_TAG) }}
-          IMAGE_CACHE_FROM: ${{ format('type=registry,ref={0}:latest-buildcache', env.IMAGE_NAME) }}
-          IMAGE_CACHE_TO: ${{ env.IMAGE_TAG == 'latest' && format('type=registry,ref={0}:latest-buildcache,mode=max', env.IMAGE_NAME) || '' }}
         with:
           context: .
           builder: ${{ steps.buildx.outputs.name }}
           file: ./Dockerfile
           push: true
-          tags: ${{ env.IMAGE_NAME_AND_TAG }}
-          cache-from: ${{ env.IMAGE_CACHE_FROM }}
-          cache-to: ${{ env.IMAGE_CACHE_TO }} 
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          annotations: ${{ steps.meta.outputs.annotations }}
+          cache-from: ${{ steps.cache.outputs.cache_from }}
+          cache-to: ${{ steps.cache.outputs.cache_to }}

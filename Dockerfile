@@ -18,20 +18,21 @@ RUN <<EOF
     rm -rf /var/lib/apt/lists/*
 EOF
 
-ARG PYTHON_VERSION="3.10.17+20250409"
-ARG PYTHON_SHA256_DIGEST="ba9e325b2d3ccacc1673f98aada0ee38f7d2d262c52253e2b36f745c9ae6e070"
+ARG PYTHON_DATE="20260203"
+ARG PYTHON_VERSION="3.10.19"
+ARG PYTHON_SHA256_DIGEST="3397194408bd9afd3463a70313dc83d9d8abcf4beb37fc7335fa666a1501784c"
 RUN <<EOF
     set -eu
 
     mkdir -p /opt/python-download
 
     cd /opt/python-download
-    wget -O "python.tar.gz" "https://github.com/astral-sh/python-build-standalone/releases/download/20250409/cpython-${PYTHON_VERSION}-x86_64-unknown-linux-gnu-install_only.tar.gz"
+    wget -O "python.tar.gz" "https://github.com/astral-sh/python-build-standalone/releases/download/${PYTHON_DATE}/cpython-${PYTHON_VERSION}+${PYTHON_DATE}-x86_64-unknown-linux-gnu-install_only.tar.gz"
     echo "${PYTHON_SHA256_DIGEST} python.tar.gz" | sha256sum -c -
 
     # Extract to ./python
     tar xf "python.tar.gz"
-    
+
     mv ./python /opt/python
 
     rm -f "python.tar.gz"

@@ -85,7 +85,7 @@ USER "${BUILDER_UID}:${BUILDER_GID}"
 WORKDIR "/work"
 
 # uvをインストール
-ARG UV_VERSION="0.6.14"
+ARG UV_VERSION="0.9.29"
 RUN <<EOF
     pip install --user "uv==${UV_VERSION}"
 EOF

@@ -88,12 +88,12 @@ jobs:
         id: cache
         run: |-
           if [[ "${{ github.event_name }}" == "release" && "${{ github.event.release.prerelease }}" == "false" ]]; then
-            echo "cache_from=type=registry,ref=${{ env.GHCR_IMAGE_NAME }}:buildcache-edge" >> "$GITHUB_OUTPUT"
-            echo "cache_from=type=registry,ref=${{ env.GHCR_IMAGE_NAME }}:buildcache-latest" >> "$GITHUB_OUTPUT"
-            echo "cache_to=type=registry,ref=${{ env.GHCR_IMAGE_NAME }}:buildcache-latest,mode=max" >> "$GITHUB_OUTPUT"
+            echo "cache_from=type=registry,ref=${{ env.GHCR_IMAGE_NAME }}:edge-buildcache" >> "$GITHUB_OUTPUT"
+            echo "cache_from=type=registry,ref=${{ env.GHCR_IMAGE_NAME }}:buildcache" >> "$GITHUB_OUTPUT"
+            echo "cache_to=type=registry,ref=${{ env.GHCR_IMAGE_NAME }}:buildcache,mode=max" >> "$GITHUB_OUTPUT"
           else
-            echo "cache_from=type=registry,ref=${{ env.GHCR_IMAGE_NAME }}:buildcache-edge" >> "$GITHUB_OUTPUT"
-            echo "cache_to=type=registry,ref=${{ env.GHCR_IMAGE_NAME }}:buildcache-edge,mode=max" >> "$GITHUB_OUTPUT"
+            echo "cache_from=type=registry,ref=${{ env.GHCR_IMAGE_NAME }}:edge-buildcache" >> "$GITHUB_OUTPUT"
+            echo "cache_to=type=registry,ref=${{ env.GHCR_IMAGE_NAME }}:edge-buildcache,mode=max" >> "$GITHUB_OUTPUT"
           fi
 
       # Build and push images

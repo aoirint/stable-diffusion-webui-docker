@@ -173,8 +173,8 @@ USER "${USER_UID}:${USER_GID}"
 WORKDIR "/code/stable-diffusion-webui"
 
 ARG SD_WEBUI_URL="https://github.com/AUTOMATIC1111/stable-diffusion-webui"
-# v1.10.1
-ARG SD_WEBUI_VERSION="82a973c04367123ae98bd9abdf80d9eda9b910e2"
+# 2026-02-05 dev branch latest commit
+ARG SD_WEBUI_VERSION="fd68e0c3846b07c637c3d57b0c38f06c8485a753"
 RUN <<EOF
     set -eu
 

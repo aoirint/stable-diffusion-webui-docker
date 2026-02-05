@@ -45,7 +45,7 @@ dependencies = [
   "clip",
   # https://github.com/Mikubill/sd-webui-controlnet/blob/56cec5b2958edf3b1807b7e7b2b1b5186dbd2f81/requirements.txt
   "fvcore",
-  "mediapipe",
+  "mediapipe==0.10.11",  # controlnet_aux 0.0.10 raises AttributeError: module 'mediapipe' has no attribute 'solutions'
   "opencv-python>=4.8.0",
   "svglib<1.6",  # svglib 1.6 requires pycairo. pycairo requires gcc to install. We won't install gcc on runtime.
   "addict",
@@ -54,7 +54,7 @@ dependencies = [
   "matplotlib",
   "timm<=0.9.5",
   "pydantic<=1.10.17",
-  "controlnet_aux>=0.0.9",
+  "controlnet_aux==0.0.10",  # Lock due to mediapipe compatibility issue
 ]
 
 [tool.uv.sources]

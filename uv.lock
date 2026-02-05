@@ -1333,7 +1333,7 @@ wheels = [
 
 [[package]]
 name = "onnxruntime-gpu"
-version = "1.16.0"
+version = "1.20.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "coloredlogs" },
@@ -1344,8 +1344,8 @@ dependencies = [
     { name = "sympy" },
 ]
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/8b/bb/550c2b3fa8c6a10af164354d74c07a5f3a3ef7c62ccdfe8d90576dea9edb/onnxruntime_gpu-1.16.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:ecd816069373c94a9c2d9554932328f17da9b76b3de8ce13c24d96ddd91f02db", size = 153372130, upload-time = "2023-09-19T22:20:05.676Z" },
-    { url = "https://files.pythonhosted.org/packages/23/12/3e972d78bf03e47baca260509e33607a60ec6c7f99b5ed2c473df7bd50ca/onnxruntime_gpu-1.16.0-cp310-cp310-win_amd64.whl", hash = "sha256:0913940593442fb92aac385ddca3b712c452a4e967d7f3aa61bfa9c2ec7502af", size = 125706897, upload-time = "2023-09-19T22:20:19.325Z" },
+    { url = "https://files.pythonhosted.org/packages/04/ad/4e5534dcaafe36f596792ebd0049177f7f0b7afa0f696505974ed1d6f72c/onnxruntime_gpu-1.20.2-cp310-cp310-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:dfba508f110ec062dedfd3032e6eee8cde325026e9d7c5792884e8b9d4ebb9c3", size = 291522233, upload-time = "2025-03-07T05:46:08.901Z" },
+    { url = "https://files.pythonhosted.org/packages/a5/2a/8afc5aee996fd33fb816bc3067fdbde96a2a7520d4c275fa502f3aef7e54/onnxruntime_gpu-1.20.2-cp310-cp310-win_amd64.whl", hash = "sha256:75a7557292b2741e63fb73236ee84faa08075cead52d9a8d302a67036fc64f16", size = 279696089, upload-time = "2025-03-07T05:39:24.924Z" },
 ]
 
 [[package]]
@@ -2123,7 +2123,7 @@ requires-dist = [
     { name = "mediapipe", specifier = "==0.10.11" },
     { name = "numpy", specifier = "==1.26.2" },
     { name = "omegaconf", specifier = "==2.2.3" },
-    { name = "onnxruntime-gpu", specifier = "==1.16.0" },
+    { name = "onnxruntime-gpu", specifier = "==1.20.2" },
     { name = "open-clip-torch", specifier = "==2.20.0" },
     { name = "opencv-python", specifier = ">=4.8.0" },
     { name = "piexif", specifier = "==1.1.3" },

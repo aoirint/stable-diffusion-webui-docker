@@ -47,7 +47,7 @@ dependencies = [
   "fvcore",
   "mediapipe",
   "opencv-python>=4.8.0",
-  "svglib",
+  "svglib<1.6",  # svglib 1.6 requires pycairo. pycairo requires gcc to install. We won't install gcc on runtime.
   "addict",
   "yapf",
   "albumentations==1.4.3",

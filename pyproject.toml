@@ -42,7 +42,6 @@ dependencies = [
   "httpx==0.24.1",
   "pillow-avif-plugin==1.4.3",
   "onnxruntime-gpu==1.16.0",
-  "xformers==0.0.30",
   "clip",
   # https://github.com/Mikubill/sd-webui-controlnet/blob/56cec5b2958edf3b1807b7e7b2b1b5186dbd2f81/requirements.txt
   "fvcore",
@@ -61,7 +60,6 @@ dependencies = [
 [tool.uv.sources]
 torch = { index = "pytorch-cu128" }
 torchvision = { index = "pytorch-cu128" }
-xformers = { index = "pytorch-cu128" }
 clip = { git = "https://github.com/openai/CLIP", rev = "d50d76daa670286dd6cacf3bcd80b5e4823fc8e1" }
 
 [[tool.uv.index]]

@@ -41,7 +41,7 @@ dependencies = [
   "transformers==4.30.2",
   "httpx==0.24.1",
   "pillow-avif-plugin==1.4.3",
-  "onnxruntime-gpu==1.16.0",
+  "onnxruntime-gpu==1.20.2",
   "clip",
   # https://github.com/Mikubill/sd-webui-controlnet/blob/56cec5b2958edf3b1807b7e7b2b1b5186dbd2f81/requirements.txt
   "fvcore",

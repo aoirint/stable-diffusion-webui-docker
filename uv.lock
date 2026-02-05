@@ -2094,7 +2094,6 @@ dependencies = [
     { name = "torchsde" },
     { name = "torchvision" },
     { name = "transformers" },
-    { name = "xformers" },
     { name = "yapf" },
 ]
 
@@ -2147,7 +2146,6 @@ requires-dist = [
     { name = "torchsde", specifier = "==0.2.6" },
     { name = "torchvision", specifier = "==0.22.0+cu128", index = "https://download.pytorch.org/whl/cu128" },
     { name = "transformers", specifier = "==4.30.2" },
-    { name = "xformers", specifier = "==0.0.30", index = "https://download.pytorch.org/whl/cu128" },
     { name = "yapf" },
 ]
 
@@ -2507,19 +2505,6 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/8f/7b/4d4ecd29be7d08486e38f987a6603c491296d1e33fe55127d79aebb0333e/websockets-11.0.3-cp310-cp310-win32.whl", hash = "sha256:2d903ad4419f5b472de90cd2d40384573b25da71e33519a67797de17ef849b69", size = 124152, upload-time = "2023-05-07T14:23:33.183Z" },
     { url = "https://files.pythonhosted.org/packages/98/a7/0ed69892981351e5acf88fac0ff4c801fabca2c3bdef9fca4c7d3fde8c53/websockets-11.0.3-cp310-cp310-win_amd64.whl", hash = "sha256:1d2256283fa4b7f4c7d7d3e84dc2ece74d341bce57d5b9bf385df109c2a1a82f", size = 124674, upload-time = "2023-05-07T14:23:35.331Z" },
     { url = "https://files.pythonhosted.org/packages/47/96/9d5749106ff57629b54360664ae7eb9afd8302fad1680ead385383e33746/websockets-11.0.3-py3-none-any.whl", hash = "sha256:6681ba9e7f8f3b19440921e99efbb40fc89f26cd71bf539e45d8c8a25c976dc6", size = 118056, upload-time = "2023-05-07T14:25:18.508Z" },
-]
-
-[[package]]
-name = "xformers"
-version = "0.0.30"
-source = { registry = "https://download.pytorch.org/whl/cu128" }
-dependencies = [
-    { name = "numpy" },
-    { name = "torch" },
-]
-wheels = [
-    { url = "https://download.pytorch.org/whl/cu128/xformers-0.0.30-cp310-cp310-manylinux_2_28_x86_64.whl", hash = "sha256:fc3cc23baf901e2ecb33f525bca12321bd275d2ad69360beb6edaf6dda3ab064" },
-    { url = "https://download.pytorch.org/whl/cu128/xformers-0.0.30-cp310-cp310-win_amd64.whl", hash = "sha256:894d0d4926c0e984b61d0d260f43495085f1e2300332bb76520735a6e6279922" },
 ]
 
 [[package]]

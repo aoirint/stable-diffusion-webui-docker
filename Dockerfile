@@ -1,48 +1,34 @@
 # syntax=docker/dockerfile:1
-ARG BASE_IMAGE="ubuntu:24.04"
+ARG BASE_IMAGE=ubuntu:24.04
+ARG PYTHON_VERSION=3.10
+ARG UV_VERSION=0.9
 
-# Pythonバイナリをダウンロードするステージ
-FROM "${BASE_IMAGE}" AS download-python-stage
+# Download uv binary stage
+FROM "ghcr.io/astral-sh/uv:${UV_VERSION}" AS uv-reference
 
+# Build uv and Python base stage
+FROM "${BASE_IMAGE}" AS uv-python-base
+
+ARG DEBIAN_FRONTEND=noninteractive
 SHELL ["/bin/bash", "-euo", "pipefail", "-c"]
 
-ARG DEBIAN_FRONTEND="noninteractive"
+ENV PYTHONUNBUFFERED=1
 
-RUN --mount=type=cache,id=apt-cache-download,target=/var/cache/apt \
-    --mount=type=cache,id=apt-lists-download,target=/var/lib/apt/lists \
-<<EOF
-    apt-get update
+ARG UV_VERSION
+COPY --from=uv-reference /uv /uvx /bin/
 
-    apt-get install -y \
-        wget \
-        ca-certificates
-EOF
+ENV UV_PYTHON_CACHE_DIR="/uv_python_cache"
+ENV UV_PYTHON_INSTALL_DIR="/opt/python"
+ENV PATH="${UV_PYTHON_INSTALL_DIR}/bin:${PATH}"
 
-ARG PYTHON_DATE="20260203"
-ARG PYTHON_VERSION="3.10.19"
-ARG PYTHON_SHA256_DIGEST="3397194408bd9afd3463a70313dc83d9d8abcf4beb37fc7335fa666a1501784c"
-RUN <<EOF
-    mkdir -p /opt/python-download
-
-    cd /opt/python-download
-    wget -O "python.tar.gz" "https://github.com/astral-sh/python-build-standalone/releases/download/${PYTHON_DATE}/cpython-${PYTHON_VERSION}+${PYTHON_DATE}-x86_64-unknown-linux-gnu-install_only.tar.gz"
-    echo "${PYTHON_SHA256_DIGEST} python.tar.gz" | sha256sum -c -
-
-    # Extract to ./python
-    tar xf "python.tar.gz"
-
-    mv ./python /opt/python
-
-    rm -f "python.tar.gz"
+ARG PYTHON_VERSION
+RUN --mount=type=cache,target=/uv_python_cache <<EOF
+    uv python install "${PYTHON_VERSION}"
 EOF
 
 
-# Python仮想環境を構築するステージ
-FROM "${BASE_IMAGE}" AS build-python-venv-stage
-
-SHELL ["/bin/bash", "-euo", "pipefail", "-c"]
-
-ARG DEBIAN_FRONTEND="noninteractive"
+# Build Python virtual environment stage
+FROM uv-python-base AS build-venv
 
 RUN --mount=type=cache,id=apt-cache-build,target=/var/cache/apt \
     --mount=type=cache,id=apt-lists-build,target=/var/lib/apt/lists \
@@ -53,56 +39,23 @@ RUN --mount=type=cache,id=apt-cache-build,target=/var/cache/apt \
         git
 EOF
 
+#  uv configuration
+# - Generate bytecodes
+# - Copy packages into virtual environment
+ENV UV_COMPILE_BYTECODE=1
+ENV UV_LINK_MODE=copy
 
-# ホームディレクトリを持つ作業用ユーザーを作成
-ARG BUILDER_UID="999"
-ARG BUILDER_GID="999"
-RUN <<EOF
-    groupadd --non-unique --gid "${BUILDER_GID}" "builder"
-    useradd --non-unique --uid "${BUILDER_UID}" --gid "${BUILDER_GID}" --create-home "builder"
-EOF
+# Install Python dependencies
+COPY ./pyproject.toml uv.lock /work/
+RUN --mount=type=cache,target=/root/.cache/uv <<EOF
+    cd /work
 
-# 作業用ユーザーが使用する作業ディレクトリと出力先ディレクトリを作成
-RUN <<EOF
-    mkdir -p "/work"
-    chown -R "${BUILDER_UID}:${BUILDER_GID}" "/work"
-
-    mkdir -p "/cache/uv"
-    chown -R "${BUILDER_UID}:${BUILDER_GID}" "/cache/uv"
-
-    mkdir -p "/opt/python_venv"
-    chown -R "${BUILDER_UID}:${BUILDER_GID}" "/opt/python_venv"
-EOF
-
-# Pythonをインストール
-COPY --chown=root:root --from=download-python-stage /opt/python /opt/python
-ENV PATH="/home/builder/.local/bin:/opt/python/bin:${PATH}"
-
-# 作業用ユーザーに切り替え
-USER "${BUILDER_UID}:${BUILDER_GID}"
-WORKDIR "/work"
-
-# uvをインストール
-ARG UV_VERSION="0.9.29"
-RUN <<EOF
-    pip install --user "uv==${UV_VERSION}"
-EOF
-
-COPY ./pyproject.toml ./uv.lock /work/
-RUN --mount=type=cache,uid="${BUILDER_UID}",gid="${BUILDER_GID}",target=/cache/uv <<EOF
-    cd "/work"
-    uv venv "/opt/python_venv"
-
-    UV_PROJECT_ENVIRONMENT="/opt/python_venv" uv sync
+    UV_PROJECT_ENVIRONMENT="/opt/python_venv" uv sync --frozen --no-dev --no-editable --no-install-project
 EOF
 
 
-# 実行用ステージ
-FROM "${BASE_IMAGE}" AS runtime-stage
-
-SHELL ["/bin/bash", "-euo", "pipefail", "-c"]
-
-ARG DEBIAN_FRONTEND="noninteractive"
+# Runtime stage
+FROM uv-python-base AS runtime
 
 RUN --mount=type=cache,id=apt-cache-runtime,target=/var/cache/apt \
     --mount=type=cache,id=apt-lists-runtime,target=/var/lib/apt/lists \
@@ -117,7 +70,11 @@ RUN --mount=type=cache,id=apt-cache-runtime,target=/var/cache/apt \
         bc
 EOF
 
-# ホームディレクトリを持つ実行用ユーザーを作成
+# Copy Python virtual environment from build stage
+COPY --from=build-venv /opt/python_venv /opt/python_venv
+ENV PATH="/home/user/.local/bin:/opt/python_venv/bin:${PATH}"
+
+# Create a non-root user with a home directory
 ARG USER_UID="1000"
 ARG USER_GID="1000"
 RUN <<EOF
@@ -125,14 +82,7 @@ RUN <<EOF
     useradd --non-unique --uid "${USER_UID}" --gid "${USER_GID}" --create-home "user"
 EOF
 
-# Pythonをインストール
-COPY --chown=root:root --from=download-python-stage /opt/python /opt/python
-
-# Python仮想環境をインストール
-COPY --chown=root:root --from=build-python-venv-stage /opt/python_venv /opt/python_venv
-ENV PATH="/home/user/.local/bin:/opt/python_venv/bin:/opt/python/bin:${PATH}"
-
-# 実行用ユーザーが使用する作業ディレクトリと出力先ディレクトリを作成
+# Create working directory and data directory for runtime user
 RUN <<EOF
     mkdir -p "/code/stable-diffusion-webui"
     chown -R "${USER_UID}:${USER_GID}" "/code/stable-diffusion-webui"
@@ -144,16 +94,18 @@ RUN <<EOF
     chown -R "${USER_UID}:${USER_GID}" "/home/user/.cache"
 EOF
 
-# 作業用ユーザーに切り替え
+# Switch to non-root user
 USER "${USER_UID}:${USER_GID}"
 WORKDIR "/code/stable-diffusion-webui"
 
-ARG SD_WEBUI_URL="https://github.com/AUTOMATIC1111/stable-diffusion-webui"
 # 2026-02-05 dev branch latest commit
+ARG SD_WEBUI_URL="https://github.com/AUTOMATIC1111/stable-diffusion-webui"
 ARG SD_WEBUI_VERSION="fd68e0c3846b07c637c3d57b0c38f06c8485a753"
 RUN <<EOF
     git clone "${SD_WEBUI_URL}" .
     git checkout "${SD_WEBUI_VERSION}"
+
+    python -m compileall .
 EOF
 
 RUN <<EOF
@@ -162,9 +114,6 @@ RUN <<EOF
     rm -rf "/code/stable-diffusion-webui/extensions"
     ln -s "/data/extensions" "/code/stable-diffusion-webui/extensions"
 EOF
-
-# Python configuration
-ENV PYTHONUNBUFFERED="1"
 
 # webui.sh: Disable venv support
 ENV venv_dir="-"
